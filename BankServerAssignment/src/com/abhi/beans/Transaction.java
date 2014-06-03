@@ -39,4 +39,10 @@ public class Transaction {
 	public void setAvailableBalance(double availableBalance) {
 		this.availableBalance = availableBalance;
 	}
+	@Override
+	public String toString() {
+		return "Transaction [id=" + id + ", date=" + date + ", description="
+				+ description + ", amount=" + amount + ", availableBalance="
+				+ availableBalance + "]";
+	}
 }

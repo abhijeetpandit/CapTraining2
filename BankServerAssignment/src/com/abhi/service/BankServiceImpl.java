@@ -25,12 +25,12 @@ public class BankServiceImpl implements BankService{
 		validateCustomer(c);
 		
 		if(initialAmount < MIN_INITIAL_BAL) {
-			throw new InsufficientInitialAmountException("Initial amount is "
-					+ initialAmount + "Minimum amount required is " + MIN_INITIAL_BAL);
+			throw new InsufficientInitialAmountException("Account not created. Initial amount is "
+					+ initialAmount + " Minimum amount required is " + MIN_INITIAL_BAL);
 		}
 		Account account = new Account(STARTING_ACOUNT_NO++, initialAmount, c);
 		accountRepository.saveAccount(account);
-		return null;
+		return "Account is create account no is " + account.getAccountNumber() + " balance is " + account.getBalance();
 	}
 
 	@Override
@@ -117,7 +117,7 @@ public class BankServiceImpl implements BankService{
 		checkNullAndThrowException(c, "Customer");
 		checkNullAndThrowException(c.getFirstName(), "First name");
 		checkNullAndThrowException(c.getLastName(), "Last name");
-		checkNullAndThrowException(c.getAddress(), "Address name");
+		checkNullAndThrowException(c.getAddress(), "Address");
 		checkNullAndThrowException(c.getAddress().getAddressLine(), "Addressline name");
 		checkNullAndThrowException(c.getAddress().getCity(), "City name");
 		checkNullAndThrowException(c.getAddress().getCountry(), "Country name");
@@ -128,5 +128,8 @@ public class BankServiceImpl implements BankService{
 			throw new DataException("Invalid data " + string + " can not be null");
 		}
 	}
-	
+
+	public AccountRepository getAccountRepository() {
+		return accountRepository;
+	}
 }

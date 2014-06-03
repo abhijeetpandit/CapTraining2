@@ -1,6 +1,6 @@
 package com.abhi.exception;
 
-public class InsufficientBalanceException extends Exception {
+public class InsufficientBalanceException extends BankServiceException {
 
 	/**
 	 * 

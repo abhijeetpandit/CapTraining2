@@ -32,4 +32,12 @@ public class Account {
 	public List<Transaction> getTransactions() {
 		return transactions;
 	}
+	@Override
+	public String toString() {
+		return "Account [accountNumber=" + accountNumber + ", balance="
+				+ balance + ", customer=" + customer + ", transactions="
+				+ transactions + "]";
+	}
+	
+	
 }
