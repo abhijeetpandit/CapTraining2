@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.abhi.beans.Account;
+import com.abhi.beans.Transaction;
 import com.abhi.exception.InvalidAccountNumberException;
 
 public class AccountRepositoryImpl implements AccountRepository {
@@ -33,8 +34,12 @@ public class AccountRepositoryImpl implements AccountRepository {
 		for(Entry<Integer, Account> entry : accounts.entrySet()) {
 			Account account = entry.getValue();
 			stringBuilder.append(entry.getKey()).append(":").append("accountNo=" + account.getAccountNumber() + " Balance=" + account.getBalance());
+			stringBuilder.append("\n");
+			for(Transaction transaction : account.getTransactions()) {
+				stringBuilder.append(transaction.toString()).append("\n");
+			}
 		}
-		return "AccountRepositoryImpl [accounts=" + accounts + "]";
+		return stringBuilder.toString();//"AccountRepositoryImpl [accounts=" + accounts + "]";
 	}
 	
 }

@@ -1,7 +1,6 @@
 import com.abhi.beans.Address;
 import com.abhi.beans.Customer;
 import com.abhi.exception.BankServiceException;
-import com.abhi.exception.InsufficientBalanceException;
 import com.abhi.exception.InvalidAccountNumberException;
 import com.abhi.service.BankService;
 import com.abhi.service.BankServiceImpl;
@@ -29,13 +28,43 @@ public class Test {
 		testCreate5Accounts(customer1, customer2, customer3, customer4,
 				customer5, bankService);
 		
-		testDepositInInvalidAccountNo(bankService);
-		
+		//deposit invalid account no
+		testDeposit(bankService, 11, 500);
 		System.out.println(((BankServiceImpl) bankService).getAccountRepository());
 		
-		testWithdrawInvalidAccountNo(bankService);
-		
+		//Withdraw with invalid account no
+		testWithdraw(bankService, 15, 5000);
 		System.out.println(((BankServiceImpl) bankService).getAccountRepository());
+	
+		//Deposit success
+		testDeposit(bankService, 1001, 2222);
+		System.out.println(((BankServiceImpl) bankService).getAccountRepository());
+		
+		//Withdrawal fail due to insufficient balance
+		testWithdraw(bankService, 1002, 3001);
+		System.out.println(((BankServiceImpl) bankService).getAccountRepository());
+		
+		//Fund transfer insufficient balance
+		testTransfer(bankService, 1000, 1001, 5555);
+		System.out.println(((BankServiceImpl) bankService).getAccountRepository());
+		
+		//Fund transfer successful
+		testTransfer(bankService, 1000, 1001, 2000);
+		System.out.println(((BankServiceImpl) bankService).getAccountRepository());
+		
+		//Print transactions of all
+		try {
+			System.out.println(bankService.printTransactions(1000));
+			System.out.println(bankService.printTransactions(1001));
+			System.out.println(bankService.printTransactions(1002));
+			System.out.println(bankService.printTransactions(1003));
+			System.out.println(bankService.printTransactions(1004));
+			System.out.println(bankService.printTransactions(999));
+		} catch (InvalidAccountNumberException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	private static void testCreateAccountWithLessBalance(Customer customer4,
@@ -65,20 +94,20 @@ public class Test {
 	}
 	
 	
-	private static void testDepositInInvalidAccountNo(BankService bankService) {
+	private static void testDeposit(BankService bankService, int accountNo, double amount) {
 		//Test invalid account no deposit
 		try {
-			double amountDeposit = bankService.deposit(999, 1000);
+			double amountDeposit = bankService.deposit(accountNo, amount);
 			System.out.println("Balance after Deposit= " + amountDeposit);
 		} catch (BankServiceException e) {
 			System.out.println(e.getMessage());
 		}
 	}
 	
-	private static void testWithdrawInvalidAccountNo(BankService bankService) {
+	private static void testWithdraw(BankService bankService, int accountNo, double amount) {
 		//Test invalid account no withdraw
 		try {
-			double amountWithdraw = bankService.withdraw(999, 1000);
+			double amountWithdraw = bankService.withdraw(accountNo, amount);
 			System.out.println("Balance after withdraw" + amountWithdraw);
 		} catch (BankServiceException e) {
 			System.out.println(e.getMessage());
@@ -86,7 +115,16 @@ public class Test {
 	}
 
 	
-	
+	private static void testTransfer(BankService bankService, int sourceAccountNo, int destinationAccountNo,
+			double amount) {
+		try {
+			String reply = bankService.transferAmount(sourceAccountNo, destinationAccountNo, amount);
+			System.out.println(reply);
+		} catch (BankServiceException e) {
+			System.out.println(e.getMessage());
+		}
+		
+	}
 	
 	
 	

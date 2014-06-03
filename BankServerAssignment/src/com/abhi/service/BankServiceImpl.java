@@ -16,7 +16,7 @@ import com.abhi.exception.InvalidAccountNumberException;
 public class BankServiceImpl implements BankService{
 	private AccountRepository accountRepository = new AccountRepositoryImpl();
 
-	private static int STARTING_ACOUNT_NO = 999;
+	private static int STARTING_ACOUNT_NO = 1000;
 	private static int MIN_INITIAL_BAL = 2000;
 	
 	@Override
