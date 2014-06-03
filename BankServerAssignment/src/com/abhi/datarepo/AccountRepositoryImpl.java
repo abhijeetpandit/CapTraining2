@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.abhi.beans.Account;
+import com.abhi.exception.InvalidAccountNumberException;
 
 public class AccountRepositoryImpl implements AccountRepository {
 
@@ -16,7 +17,12 @@ public class AccountRepositoryImpl implements AccountRepository {
 	}
 
 	@Override
-	public Account readAccount(int accountNo) {
-		return accounts.get(accountNo);
+	public Account readAccount(int accountNo) throws InvalidAccountNumberException {
+		Account account =  accounts.get(accountNo);
+		if(account == null) {
+			throw new InvalidAccountNumberException("Account with account number" + accountNo + " not found");
+		} else {
+			return account;
+		}
 	}
 }
