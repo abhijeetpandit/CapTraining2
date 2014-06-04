@@ -41,30 +41,31 @@ public class BankServiceImpl implements BankService{
 	}
 
 	@Override
-	public double withdraw(int accountNumber, double amount)
+	public synchronized double withdraw(int accountNumber, double amount)
 			throws InvalidAccountNumberException, InsufficientBalanceException {
 		Account account = accountRepository.readAccount(accountNumber);
-		
-		if(account.getBalance() < amount) {
-			throw new InsufficientBalanceException("Insufficient " +
-					"balance amount to be withdrawn = " + amount + " Balance in account = " + account.getBalance());
+		synchronized (account) {
+			if(account.getBalance() < amount) {
+				throw new InsufficientBalanceException("Insufficient " +
+						"balance amount to be withdrawn = " + amount + " Balance in account = " + account.getBalance());
+			}
+			try {
+				System.out.println("Before sleep=" + Thread.currentThread().getName());
+				Thread.sleep(5000);
+				System.out.println("After sleep=" + Thread.currentThread().getName());
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			double newAccountBalance = account.getBalance() - amount;
+			account.setBalance(newAccountBalance);
+			Transaction transaction = new Transaction();
+			transaction.setAmount(amount);
+			transaction.setAvailableBalance(newAccountBalance);
+			transaction.setDate(new Date());
+			transaction.setDescription("Amount Debit = " + amount + " Ending balance = " + newAccountBalance);
+			account.addTransaction(transaction);
+			return newAccountBalance;
 		}
-		try {
-			System.out.println("Before sleep=" + Thread.currentThread().getName());
-			Thread.sleep(5000);
-			System.out.println("After sleep=" + Thread.currentThread().getName());
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		double newAccountBalance = account.getBalance() - amount;
-		account.setBalance(newAccountBalance);
-		Transaction transaction = new Transaction();
-		transaction.setAmount(amount);
-		transaction.setAvailableBalance(newAccountBalance);
-		transaction.setDate(new Date());
-		transaction.setDescription("Amount Debit = " + amount + " Ending balance = " + newAccountBalance);
-		account.addTransaction(transaction);
-		return newAccountBalance;
 	}
 
 	@Override
