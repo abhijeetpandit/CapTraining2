@@ -1,8 +1,20 @@
 package com.abhi.beans;
 
-import java.util.Date;
 
 public class Day {
-	private Date date;
-	private String comments = "";
+	private String date;
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	@Override
+	public String toString() {
+		return "Day [date=" + date + "]";
+	}
+	
 }
