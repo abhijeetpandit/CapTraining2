@@ -1,8 +1,8 @@
 package com.abhi.datarepo;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import com.abhi.beans.Account;
 import com.abhi.beans.Transaction;
@@ -10,7 +10,7 @@ import com.abhi.exception.InvalidAccountNumberException;
 
 public class AccountRepositoryImpl implements AccountRepository {
 
-	private Map<Integer, Account> accounts = new HashMap<>();
+	private Map<Integer, Account> accounts = new TreeMap<>();
 	
 	@Override
 	public boolean saveAccount(Account account) {

@@ -44,11 +44,19 @@ public class BankServiceImpl implements BankService{
 	public double withdraw(int accountNumber, double amount)
 			throws InvalidAccountNumberException, InsufficientBalanceException {
 		Account account = accountRepository.readAccount(accountNumber);
-		double newAccountBalance = account.getBalance() - amount;
-		if(newAccountBalance < 0) {
+		
+		if(account.getBalance() < amount) {
 			throw new InsufficientBalanceException("Insufficient " +
 					"balance amount to be withdrawn = " + amount + " Balance in account = " + account.getBalance());
 		}
+		try {
+			System.out.println("Before sleep=" + Thread.currentThread().getName());
+			Thread.sleep(5000);
+			System.out.println("After sleep=" + Thread.currentThread().getName());
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		double newAccountBalance = account.getBalance() - amount;
 		account.setBalance(newAccountBalance);
 		Transaction transaction = new Transaction();
 		transaction.setAmount(amount);
