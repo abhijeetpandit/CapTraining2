@@ -4,6 +4,10 @@ package com.abhi.beans;
 public class Day {
 	private String date;
 
+	public Day(String date) {
+		this.date = date;
+	}
+
 	public String getDate() {
 		return date;
 	}
