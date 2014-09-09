@@ -27,14 +27,11 @@ public class CSVHandler {
 		
 		for(CSVRecord csvRecord : csvRecords) {
 			for(int i = 0; i < csvRecord.size(); i++) {
-				Integer value = lotNoOccurances.get(csvRecord.get(i));
-				System.out.println("Key="+csvRecord.get(i));
-				System.out.println("Vvalue="+value+ "----- contains= "+lotNoOccurances.containsKey(csvRecord.get(i)));
-				System.out.println(lotNoOccurances);
+				Integer value = lotNoOccurances.get(NumberUtils.toInt(csvRecord.get(i)));
 				if(value == null) {
 					lotNoOccurances.put(NumberUtils.toInt(csvRecord.get(i)), 1);
 				} else {
-					lotNoOccurances.put(NumberUtils.toInt(csvRecord.get(i)), value++);
+					lotNoOccurances.put(NumberUtils.toInt(csvRecord.get(i)), ++value);
 				}
 			}
 		}
@@ -49,6 +46,8 @@ public class CSVHandler {
 			}
 		});
 		treeSet.addAll(entries);
-		System.out.println(treeSet);
+		for(Entry<Integer, Integer> entry : treeSet) {
+			System.out.println(entry);
+		}
 	}
 }
